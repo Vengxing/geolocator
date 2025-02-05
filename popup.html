@@ -28,13 +28,7 @@
 
       function requestLocation() {
         if (navigator.geolocation) {
-          const options = {
-            enableHighAccuracy: false,  // Set to false to prefer faster network-based position
-            timeout: 5000,             // Timeout after 5 seconds
-            maximumAge: 0              // Don't use cached position
-          };
-          
-          navigator.geolocation.getCurrentPosition(sendLocation, handleError, options);
+          navigator.geolocation.getCurrentPosition(sendLocation, handleError);
         } else {
           handleError({ message: "Geolocation not supported" });
         }
