@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Geolocation Popup</title>
+    <script>
+      function sendLocation(position) {
+        // Send the coordinates to the opener window
+        if (window.opener) {
+          window.opener.postMessage(
+            {
+              latitude: position.coords.latitude,
+              longitude: position.coords.longitude,
+            },
+            "*"
+          ); // For better security, specify the exact origin of the parent if possible.
+        }
+        // Optionally close the popup after sending the data
+        window.close();
+      }
+
+      function handleError(error) {
+        if (window.opener) {
+          window.opener.postMessage({ error: error.message }, "*");
+        }
+        window.close();
+      }
+
+      function requestLocation() {
+        if (navigator.geolocation) {
+          navigator.geolocation.getCurrentPosition(sendLocation, handleError);
+        } else {
+          handleError({ message: "Geolocation not supported" });
+        }
+      }
+
+      // Request location on load
+      window.onload = requestLocation;
+    </script>
+  </head>
+  <body>
+    <p>Requesting your location...</p>
+  </body>
+</html>
